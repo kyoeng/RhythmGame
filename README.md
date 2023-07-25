@@ -4,5 +4,5 @@
 
 JFrame과 JLayer를 사용하여 개발중입니다.
 
-IDE - Intellij
+IDE - Intellij/n
 java - java8
