@@ -1,4 +1,4 @@
-package rhythm_9;
+package rhythm_10;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,6 +51,14 @@ public class RhythmGame extends JFrame {
     private final ImageIcon backBtnBasic = new ImageIcon(Objects.requireNonNull(Main.class.getResource(IMAGE_ROOT + "backButtonBasic.png")));
     private final ImageIcon backBtnEntered = new ImageIcon(Objects.requireNonNull(Main.class.getResource(IMAGE_ROOT + "backButtonEntered.png")));
 
+    // 게임 화면에 필요한 이미지
+    private final Image gameInfoImage = new ImageIcon(Objects.requireNonNull(Main.class.getResource(IMAGE_ROOT + "gameInfo.png"))).getImage();
+    private final Image judgementLineImage = new ImageIcon(Objects.requireNonNull(Main.class.getResource(IMAGE_ROOT + "judgementLine.png"))).getImage();
+    private final Image noteRouteImage = new ImageIcon(Objects.requireNonNull(Main.class.getResource(IMAGE_ROOT + "noteRoute.png"))).getImage();
+    private final Image noteRouteLineImage = new ImageIcon(Objects.requireNonNull(Main.class.getResource(IMAGE_ROOT + "noteRouteLine.png"))).getImage();
+    private final Image noteBasicImage = new ImageIcon(Objects.requireNonNull(Main.class.getResource(IMAGE_ROOT + "noteBasic.png"))).getImage();
+
+
     // 버튼에 대한 변수
     private JButton exitBtn = new JButton(basicExit);           // 상단 메뉴바의 X버튼
     private JButton startBtn = new JButton(startBtnBasic);      // 메인 인트로 화면에서의 시작 버튼
@@ -66,6 +74,7 @@ public class RhythmGame extends JFrame {
     private int mouseX, mouseY;
 
     private boolean isMainScreen = false;
+    private boolean isGameScreen = false;
 
 
     // 곡들의 정보에 대한 객체를 저장할 배열
@@ -388,7 +397,7 @@ public class RhythmGame extends JFrame {
     public void paint(Graphics g) {
         screenImage = createImage(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);   // 프로그램 화면의 크기만큼 이미지를 생성
         screenGraphic = screenImage.getGraphics();                          // screenImage 에서 생성한 그래픽 가져오기
-        screenDraw(screenGraphic);                                          // screenDraw 메서드 호출
+        screenDraw((Graphics2D)screenGraphic);                                          // screenDraw 메서드 호출
         g.drawImage(screenImage, 0, 0, null);                  // 0, 0 위치에 이미지 그리기
     }
 
@@ -397,12 +406,66 @@ public class RhythmGame extends JFrame {
      * 배경이미지를 설정하고 paint 메서드를 재시작하기 위한 메서드
      * @param g Graphics
      */
-    public void screenDraw(Graphics g) {
+    public void screenDraw(Graphics2D g) {
         g.drawImage(background, 0, 0, null);               // 0, 0 위치에 이미지 그리기
+
         if (isMainScreen) {
             g.drawImage(selectedImage, 340, 100, null);
             g.drawImage(titleImage, 340, 100, null);
         }
+
+        if (isGameScreen) {
+            g.drawImage(noteRouteImage, 228, 30, null);
+            g.drawImage(noteRouteImage, 332, 30, null);
+            g.drawImage(noteRouteImage, 436, 30, null);
+            g.drawImage(noteRouteImage, 540, 30, null);
+            g.drawImage(noteRouteImage, 640, 30, null);
+            g.drawImage(noteRouteImage, 744, 30, null);
+            g.drawImage(noteRouteImage, 848, 30, null);
+            g.drawImage(noteRouteImage, 952, 30, null);
+
+            g.drawImage(noteRouteLineImage, 224, 30, null);
+            g.drawImage(noteRouteLineImage, 328, 30, null);
+            g.drawImage(noteRouteLineImage, 432, 30, null);
+            g.drawImage(noteRouteLineImage, 536, 30, null);
+            g.drawImage(noteRouteLineImage, 740, 30, null);
+            g.drawImage(noteRouteLineImage, 844, 30, null);
+            g.drawImage(noteRouteLineImage, 948, 30, null);
+            g.drawImage(noteRouteLineImage, 1052, 30, null);
+
+            g.drawImage(noteBasicImage, 228, 120, null);
+            g.drawImage(noteBasicImage, 332, 120, null);
+            g.drawImage(noteBasicImage, 436, 120, null);
+            g.drawImage(noteBasicImage, 540, 120, null);
+            g.drawImage(noteBasicImage, 640, 120, null);
+            g.drawImage(noteBasicImage, 744, 120, null);
+            g.drawImage(noteBasicImage, 848, 120, null);
+            g.drawImage(noteBasicImage, 952, 120, null);
+
+            g.drawImage(gameInfoImage, 0, 660, null);
+            g.drawImage(judgementLineImage, 0, 580, null);
+
+            g.setColor(Color.white);
+            g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            g.setFont(new Font("Arial", Font.BOLD, 30));
+            g.drawString("JoaKim Karud - Mighty Love", 20, 702);
+            g.drawString("Easy", 1190, 702);
+
+            g.setFont(new Font("Arial", Font.PLAIN, 26));
+            g.setColor(Color.DARK_GRAY);
+            g.drawString("S", 270, 609);
+            g.drawString("D", 374, 609);
+            g.drawString("F", 478, 609);
+            g.drawString("Space Bar", 580, 609);
+            g.drawString("J", 784, 609);
+            g.drawString("K", 889, 609);
+            g.drawString("L", 993, 609);
+
+            g.setColor(Color.LIGHT_GRAY);
+            g.setFont(new Font("Elephant", Font.BOLD, 30));
+            g.drawString("000000", 565, 702);
+        }
+
         paintComponents(g);
         this.repaint();                                                       // paint 메서드 재실행
     }
@@ -467,6 +530,7 @@ public class RhythmGame extends JFrame {
         background = new ImageIcon(Objects.requireNonNull(Main.class.getResource(IMAGE_ROOT + trackList.get(nowSelected).getGameImage()))).getImage();
 
         backBtn.setVisible(true);
+        isGameScreen = true;
     }
 
 
@@ -474,7 +538,9 @@ public class RhythmGame extends JFrame {
      * 게임 중 곡 선택 화면으로 넘어가기 위한 뒤로가기 메서드
      */
     public void backMain() {
+        isGameScreen = false;
         isMainScreen = true;
+
         leftBtn.setVisible(true);
         rightBtn.setVisible(true);
         easyBtn.setVisible(true);
